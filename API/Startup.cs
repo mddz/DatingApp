@@ -37,6 +37,10 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+
+            //add CORS support
+            //ordering does not really matter in here
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +56,10 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //add CORS support and ordering matter in here
+            //add this in between UseRouting and prior to UseEndpoints/UseAuthorization
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 
             app.UseAuthorization();
 
